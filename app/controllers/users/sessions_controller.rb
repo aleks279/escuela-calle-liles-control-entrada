@@ -22,7 +22,7 @@ class Users::SessionsController < Devise::SessionsController
     if resource.admin?
       admin_registries_path
     elsif resource.personal_escolar?
-      sign_out resource
+      admin_user_path resource
     else
       super
     end
