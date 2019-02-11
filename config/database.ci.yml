@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: escuela_registros_test
+  username: postgres
+  pool: 5
+  host: localhost
