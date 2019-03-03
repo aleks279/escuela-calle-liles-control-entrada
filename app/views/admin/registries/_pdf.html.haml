@@ -1,0 +1,35 @@
+%meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+= wicked_pdf_stylesheet_link_tag "pdf"
+%body.bodyReporte
+  %h1 Escuela Calle Liles
+  %hr
+
+  - if @start_date && @end_date
+    %h2 Reporte de registros desde #{@start_date.strftime('%d-%m-%Y')} hasta #{@end_date.strftime('%d-%m-%Y')}
+  - else
+    %h2 Reporte de registros
+  %ul
+    %li.liReporte
+      %strong
+        Generado por: 
+      #{current_user.full_name} 
+  %br
+
+  %h3 Registros
+  .table-responsive
+    %table#dataTable.table.tableReporte{cellspacing: '0', width: '100%'}
+      %thead
+        %tr.trReporte
+          %th.thReporte Usuario
+          %th.thReporte Cédula
+          %th.thReporte Tipo
+          %th.thReporte Fecha / Hora
+          %th.thReporte Notas
+      %tbody
+        - @registries.each do |registry|
+          %tr.trReporte
+            %td.tdReporte.align-middle=registry.user.full_name
+            %td.tdReporte.align-middle=registry.user.id_number
+            %td.tdReporte.align-middle=registry.registry_type
+            %td.tdReporte.align-middle=registry.created_at.strftime('%d-%m-%Y - %l:%M %p')
+            %td.tdReporte.align-middle=registry.try(:notes)

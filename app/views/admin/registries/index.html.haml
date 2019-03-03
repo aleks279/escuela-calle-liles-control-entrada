@@ -14,12 +14,13 @@
             .row.justify-content-between
               .col-3.align-self-center
                 = label_tag 'Fecha inicial:'
-                = text_field_tag "search[start_date]", nil, class: 'form-control input-sm datepicker', input_html: {"data-provide" => "datepicker", type: "text"}
+                = text_field_tag :start_date, params[:start_date], class: 'form-control input-sm datepicker', input_html: {"data-provide" => "datepicker", type: "text"}
               .col-3.align-self-center
                 = label_tag 'Fecha final:'
-                = text_field_tag "search[end_date]", nil, class: 'form-control input-sm datepicker', input_html: {"data-provide" => "datepicker", type: "text"}
+                = text_field_tag :end_date, params[:end_date], class: 'form-control input-sm datepicker', input_html: {"data-provide" => "datepicker", type: "text"}
               .col-3.align-self-center
-                = submit_tag 'Buscar'
+                = submit_tag 'Buscar', class: 'btn btn-primary btn-block float-right'
+                = link_to 'Generar PDF', admin_registries_path(format: :pdf, start_date: params[:start_date], end_date: params[:end_date]), target: :_blank, class: 'btn btn-danger btn-block float-right'
             .col-3
       .card.mb-3
         .card-header
