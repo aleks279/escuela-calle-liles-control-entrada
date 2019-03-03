@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  root to: 'registries#new'
+  root to: "registries#new"
 
   namespace :admin do
-    get 'users/index'
+    get "users/index"
   end
 
   devise_for :users, controllers: {
-    sessions: 'users/sessions',
+    sessions: "users/sessions",
   }
 
   devise_scope :user do
-    get 'signin' => 'users/sessions#new'
+    get "signin" => "users/sessions#new"
   end
 
   namespace :admin do

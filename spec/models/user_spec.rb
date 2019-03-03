@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe User do
-  describe 'validations' do
+  describe "validations" do
     it { is_expected.to validate_presence_of(:first_name) }
     it { is_expected.to validate_presence_of(:last_name) }
     it { is_expected.to validate_presence_of(:id_number) }
@@ -9,7 +11,7 @@ describe User do
     it { is_expected.to validate_presence_of(:role) }
   end
 
-  describe 'associations' do
+  describe "associations" do
     it { is_expected.to have_many(:registries) }
   end
 end

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Roleable
+
   extend ActiveSupport::Concern
 
   ROLES = %i[
@@ -21,4 +24,5 @@ module Roleable
   def personal_escolar?
     role.to_sym == :personal_escolar
   end
+
 end

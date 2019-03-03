@@ -12,8 +12,8 @@
 /db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
-log/
-tmp/
+/log/*
+/tmp/*
 !/log/.keep
 !/tmp/.keep
 
@@ -27,11 +27,12 @@ tmp/
 
 /config/database.yml
 erd.pdf
-.rake_tasks~
 /coverage/*
 
 .env
 .idea/
 
-.DS_Store
-/**/.DS_Store
+public/images/*
+heroku-api-key
+
+.ruby-gemset

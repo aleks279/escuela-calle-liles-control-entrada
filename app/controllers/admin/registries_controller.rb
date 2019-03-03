@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class Admin::RegistriesController < Admin::BaseController
+
   before_action :find_registry, only: %i[show]
 
   def index

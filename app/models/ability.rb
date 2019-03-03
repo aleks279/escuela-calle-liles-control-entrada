@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class Ability
+
   include CanCan::Ability
 
   def initialize(user)
@@ -8,4 +11,5 @@ class Ability
       can :update, User, id: user.id
     end
   end
+
 end

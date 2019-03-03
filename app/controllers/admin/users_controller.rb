@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class Admin::UsersController < Admin::BaseController
+
   before_action :find_user, only: %i[show edit update destroy]
   before_action :set_roles, only: %i[edit update new create]
 
@@ -20,7 +23,7 @@ class Admin::UsersController < Admin::BaseController
     if @user.save
       redirect_to admin_user_path(@user)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -33,7 +36,7 @@ class Admin::UsersController < Admin::BaseController
     if @user.update(user_params)
       redirect_to admin_user_path(@user)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -58,4 +61,5 @@ class Admin::UsersController < Admin::BaseController
   def set_roles
     @roles = User::Roleable::ROLES
   end
+
 end
