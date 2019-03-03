@@ -4,14 +4,15 @@ jobs:
     working_directory: ~/repo
 
     docker:
-       - image: circleci/ruby:2.6.1-node
-         environment:
-            PG_HOST: localhost
-            PG_USER: postgres
-            RAILS_ENV: test
-            RACK_ENV: test
-       - image: mdillon/postgis:9.6
-         environment:
+      - image: circleci/ruby:2.6.1-node-browsers
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: circleci-demo-ruby
+          RAILS_ENV: test
+          BUNDLE_PATH: ~/tmp/vendor/bundle
+          BUNDLE_APP_CONFIG: ~/tmp/vendor/bundle
+      - image: circleci/postgres:9.6-alpine
+          environment:
             POSTGRES_DB: escuela_registros_test
             POSTGRES_USER: postgres
 
