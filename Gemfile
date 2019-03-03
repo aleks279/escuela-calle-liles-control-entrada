@@ -28,7 +28,7 @@ gem "uglifier", ">= 1.3.0"
 gem "annotate", ">=2.6.0"
 gem "bootsnap", require: false
 gem "bootstrap-sass"
-gem "font-awesome-rails", github: "bokmann/font-awesome-rails", branch: "master"
+gem "font-awesome-rails"
 gem "jbuilder", "~> 2.0"
 gem "jquery_mask_rails"
 gem "popper_js", "~> 1.12.9"
@@ -56,8 +56,8 @@ gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 
 # For searches
-gem "by_star", git: "https://github.com/radar/by_star"
-gem "ransack", git: "https://github.com/activerecord-hackery/ransack"
+gem "by_star"
+gem "ransack"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
