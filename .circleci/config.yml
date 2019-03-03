@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/repo
 
     docker:
-       - image: circleci/ruby:2.4.1-node
+       - image: circleci/ruby:2.6.1-node
          environment:
             PG_HOST: localhost
             PG_USER: postgres

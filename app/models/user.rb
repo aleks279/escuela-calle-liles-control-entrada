@@ -12,7 +12,7 @@ class User < ApplicationRecord
             :id_number, :role, presence: true
   validates :id_number, uniqueness: true
 
-  has_many :registries, dependent: :nulify
+  has_many :registries, dependent: :nullify
 
   def full_name
     "#{first_name} #{last_name}"
