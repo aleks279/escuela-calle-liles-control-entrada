@@ -1,9 +1,9 @@
 version: 2
-jobs:
-  build:
-    working_directory: ~/repo
-
+references:
+  default_job_config: &default_job_config
+    working_directory: ~/tmp
     docker:
+      # specify the version you desire here
       - image: circleci/ruby:2.6.1-node-browsers
         environment:
           PGHOST: 127.0.0.1
@@ -13,70 +13,88 @@ jobs:
           BUNDLE_APP_CONFIG: ~/tmp/vendor/bundle
       - image: circleci/postgres:9.6-alpine
         environment:
-          POSTGRES_DB: escuela_registros_test
+          POSTGRES_DB: pernix-central-test
           POSTGRES_USER: postgres
 
+jobs:
+  bundle:
+    <<: *default_job_config
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}
 
-      - run:
-          name: Install rmagick dependencies
-          command: sudo apt-get install imagemagick
+      - run: bundle install --without=development --jobs=4 --retry=3
 
-      - run:
-          name: Install PG Client
-          command: |
-            echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
-            wget --no-check-certificate -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo -u root apt-key add -
-            sudo apt-get update
-            sudo apt-get install postgresql-9.6 postgresql-client-9.6
+      - save_cache:
+          key: gem-cache-{{ arch }}--{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/tmp/vendor/bundle
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  rubocop:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: bundle exec rubocop --config .rubocop.yml
+
+  bundle_audit:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      - run: bundle exec bundle-audit
+
+  rspec:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: ~/tmp
+      
       - run:
           name: Create DB config file
           command: mv config/database.ci.yml config/database.yml
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 2m
+
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
 
       - run:
-          name: Install latest version of Bundler
-          command: gem install bundler
-
-      - run:
-          name: Install dependencies
-          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs 4 --retry 3
-
-      - save_cache:
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-          paths:
-            - ./vendor/bundle
-
-      - run:
-          name: Database setup
+          shell: /bin/bash -eo pipefail -O globstar
+          name: rspec
           command: |
-            bundle exec rails db:drop
-            bundle exec rails db:create
-            bundle exec rails db:migrate
-          environment:
-            DATABASE_URL: "postgres://postgres@localhost:5432/escuela_registros_test"
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out /tmp/test-results/rspec.xml \
+                              --format documentation \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
-      # run tests!
-      - run:
-          name: Run rspec tests
-          command: |
-            mkdir -p /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-            bundle exec rspec --format documentation \
-                            --format RspecJunitFormatter \
-                            --out /tmp/test-results/rspec.xml \
-                            $TEST_FILES
-      # collect reports
       - store_test_results:
           path: /tmp/test-results
 
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - bundle
+
+      - rubocop:
+          requires:
+            - bundle
+
+      - bundle_audit:
+          requires:
+            - bundle
+
+      - rspec:
+          requires:
+            - bundle
