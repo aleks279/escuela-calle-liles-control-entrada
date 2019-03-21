@@ -87,9 +87,9 @@ workflows:
     jobs:
       - bundle
 
-      - rubocop:
-          requires:
-            - bundle
+      # - rubocop:
+      #     requires:
+      #       - bundle
 
       - bundle_audit:
           requires:
