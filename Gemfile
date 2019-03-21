@@ -90,7 +90,7 @@ group :development do
   gem "spring"
 
   gem "foreman"
-  gem "rubocop", "~> 0.49.0", require: false
+  gem "rubocop", require: false
   gem "rubocop-rspec"
   gem "scss_lint", require: false
 

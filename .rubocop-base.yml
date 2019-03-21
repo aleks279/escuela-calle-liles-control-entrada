@@ -5,7 +5,7 @@ AllCops:
     - "bin/**/*"     # Auto-generated
     - "vendor/**/*"  # We cannot solve the world's problems
     - "node_modules/**/*"
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.6.1
 
 Rails:
   Enabled: true
