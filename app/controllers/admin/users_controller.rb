@@ -59,7 +59,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def set_roles
-    @roles = User::Roleable::ROLES
+    @roles = Roleable::ROLES
   end
 
 end
