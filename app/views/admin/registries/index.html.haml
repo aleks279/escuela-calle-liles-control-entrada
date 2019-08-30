@@ -42,8 +42,8 @@
               %tbody
                 - @registries.each do |registry|
                   %tr
-                    %td.align-middle=registry.user.full_name
-                    %td.align-middle=registry.user.id_number
+                    %td.align-middle=registry.user.present? ? registry.user.full_name : registry.user_name
+                    %td.align-middle=registry.user.present? ? registry.user.id_number : registry.user_id_number
                     %td.align-middle=registry.registry_type
                     %td.align-middle=registry.created_at.strftime('%d-%m-%Y - %l:%M %p')
                     %td.align-middle=registry.try(:notes)

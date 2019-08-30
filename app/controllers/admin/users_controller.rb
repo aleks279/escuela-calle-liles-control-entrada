@@ -41,6 +41,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
+    @user.registries.update_all(user_name: @user.full_name, user_id_number: @user.id_number)
     @user.destroy
     redirect_to admin_users_path
   end
