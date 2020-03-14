@@ -30,9 +30,9 @@ class Admin::RegistriesController < Admin::BaseController
       @start_date = Date.strptime(params[:start_date], "%m/%d/%Y")
       @end_date = Date.strptime(params[:end_date], "%m/%d/%Y")
 
-      Registry.where(created_at: @start_date..@end_date)
+      Registry.where(created_at: @start_date..@end_date).order(created_at: :desc)
     else
-      Registry.all
+      Registry.all.order(created_at: :desc)
     end
   end
 
