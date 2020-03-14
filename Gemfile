@@ -31,7 +31,7 @@ gem "bootstrap-sass"
 gem "font-awesome-rails"
 gem "jbuilder", "~> 2.0"
 gem "jquery_mask_rails"
-gem "popper_js", "~> 1.12.9"
+gem "popper_js"
 gem "sdoc", "~> 0.4.0", group: :doc
 gem "turbolinks"
 
