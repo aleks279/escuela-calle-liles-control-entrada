@@ -32,7 +32,7 @@ gem "font-awesome-rails"
 gem "jbuilder", "~> 2.0"
 gem "jquery_mask_rails"
 gem "popper_js"
-gem "sdoc", "~> 0.4.0", group: :doc
+gem "sdoc", group: :doc
 gem "turbolinks"
 
 # Utilities

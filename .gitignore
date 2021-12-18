@@ -36,3 +36,6 @@ public/images/*
 heroku-api-key
 
 .ruby-gemset
+.DS_Store
+.generators
+.rakeTasks

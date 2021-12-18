@@ -31,22 +31,25 @@
             .col-3
         .card-body
           .table-responsive
-            %table#dataTable.table.table-bordered{:cellspacing => "0", :width => "100%"}
+            %table#dataTable.table{:cellspacing => "0", :width => "100%"}
               %thead
                 %tr
                   %th Usuario
                   %th Cédula
                   %th Tipo
-                  %th Fecha / Hora
-                  %th Notas
+                  %th Fecha
+                  %th Hora
               %tbody
                 - @registries.each do |registry|
-                  %tr
-                    %td.align-middle=registry.user.present? ? registry.user.full_name : registry.user_name
-                    %td.align-middle=registry.user.present? ? registry.user.id_number : registry.user_id_number
-                    %td.align-middle=registry.registry_type
-                    %td.align-middle=registry.created_at.strftime('%d-%m-%Y - %l:%M %p')
-                    %td.align-middle=registry.try(:notes)
+                  %tr{class: ('no-border' unless registry.notes.empty?)}
+                    %td.align-middle.col-md-3=registry.user.present? ? registry.user.full_name : registry.user_name
+                    %td.align-middle.col-md-3=registry.user.present? ? registry.user.id_number : registry.user_id_number
+                    %td.align-middle.col-md-2=registry.registry_type.capitalize
+                    %td.align-middle.col-md-2=registry.created_at.strftime('%d-%m-%Y')
+                    %td.align-middle.col-md-2=registry.created_at.strftime('%l:%M %p')
+                  - unless registry.notes.empty?
+                    %tr.no-border
+                      %td.align-middle.no-border{colspan: 5}="Notes: #{registry.notes}"
 
 = render 'admin/layouts/footer'
 :javascript
