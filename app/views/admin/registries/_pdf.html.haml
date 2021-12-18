@@ -17,19 +17,22 @@
 
   %h3 Registros
   .table-responsive
-    %table#dataTable.table.tableReporte{cellspacing: '0', width: '100%'}
+    %table#dataTable.table.table-bordered.tableReporte{cellspacing: '0', width: '100%'}
       %thead
         %tr.trReporte
-          %th.thReporte Usuario
+          %th.thReporte{scope: 'col'} Usuario
           %th.thReporte Cédula
           %th.thReporte Tipo
-          %th.thReporte Fecha / Hora
-          %th.thReporte Notas
+          %th.thReporte Fecha
+          %th.thReporte Hora
       %tbody
-        - @registries.each do |registry|
-          %tr.trReporte
-            %td.tdReporte.align-middle=registry.user.full_name
-            %td.tdReporte.align-middle=registry.user.id_number
-            %td.tdReporte.align-middle=registry.registry_type
-            %td.tdReporte.align-middle=registry.created_at.strftime('%d-%m-%Y - %l:%M %p')
-            %td.tdReporte.align-middle=registry.try(:notes)
+        - @registries.each_with_index do |registry, i|
+          %tr.trReporte{class: ('trReporte-color' if i.even?)}
+            %td.tdReporte.align-middle.col-md-3=registry.user.full_name
+            %td.tdReporte.align-middle.col-md-3=registry.user.id_number
+            %td.tdReporte.align-middle.col-md-2=registry.registry_type.capitalize
+            %td.tdReporte.align-middle.col-md-2=registry.created_at.strftime('%d-%m-%Y')
+            %td.tdReporte.align-middle.col-md-2=registry.created_at.strftime('%l:%M %p')
+          - unless registry.notes.empty?
+            %tr.trReporte{class: ('trReporte-color' if i.even?)}
+              %td.tdReporte.align-middle{colspan: 5}="Notes: #{registry.notes}"
